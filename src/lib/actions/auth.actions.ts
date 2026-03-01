@@ -79,7 +79,7 @@ export async function completeGoogleProfile(formData: FormData): Promise<ActionR
   const accountType = (formData.get("account_type") as string) || "FIRST_TIMER";
   const isFeastAttendee = accountType === "FEAST_ATTENDEE";
 
-  const res = await callAppsScript("updateUser", {
+  const profileData = {
     email: session.user.email,
     birthday: (formData.get("birthday") as string) || "",
     contact: (formData.get("contact") as string) || "",
@@ -92,7 +92,21 @@ export async function completeGoogleProfile(formData: FormData): Promise<ActionR
     service_ministries: isFeastAttendee ? ((formData.get("service_ministries") as string) || "") : "",
     lg_name: isFeastAttendee ? ((formData.get("lg_name") as string) || "") : "",
     discipleship_status: isFeastAttendee ? ((formData.get("discipleship_status") as string) || "") : "",
-  });
+  };
+
+  let res = await callAppsScript("updateUser", profileData);
+
+  // If the user was never written to the sheet (Apps Script was unreachable during sign-in),
+  // create them now with their full profile data.
+  if (!res.success && res.error === "User not found") {
+    res = await callAppsScript("createUser", {
+      ...profileData,
+      full_name: session.user.name || "",
+      auth_provider: "google",
+      role: "MEMBER",
+      servant_status: "NONE",
+    });
+  }
 
   if (!res.success) {
     return { success: false, error: res.error || "Failed to save profile. Please try again." };

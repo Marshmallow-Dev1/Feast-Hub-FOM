@@ -6,10 +6,12 @@ import ProfileForm from "@/components/dashboard/ProfileForm";
 export default async function ProfilePage() {
   const session = await auth();
   if (!session) redirect("/");
-  if (session.user.account_status !== "ACTIVE_MEMBER") redirect("/dashboard");
 
+  // Fetch from DB first — also resolves stale JWT (e.g. PENDING_SETUP after profile completion)
   const res = await callAppsScript<SheetUser>("getUserByEmail", { email: session.user.email });
   const user = res.data;
+  const accountStatus = user?.account_status ?? session.user.account_status;
+  if (accountStatus !== "ACTIVE_MEMBER") redirect("/dashboard");
 
   return (
     <div className="max-w-lg mx-auto space-y-5">

@@ -1,12 +1,19 @@
 import { auth } from "@/lib/auth/auth";
 import { redirect } from "next/navigation";
-import { callAppsScript, type ServantApplication } from "@/lib/sheets/client";
+import { callAppsScript, type ServantApplication, type SheetUser } from "@/lib/sheets/client";
 import BecomeServantForm from "@/components/dashboard/BecomeServantForm";
 
 export default async function BecomeServantPage() {
   const session = await auth();
   if (!session) redirect("/");
-  if (session.user.account_status !== "ACTIVE_MEMBER") redirect("/dashboard");
+
+  // Resolve stale JWT — fetch fresh status from DB if JWT shows non-ACTIVE_MEMBER
+  let accountStatus = session.user.account_status;
+  if (accountStatus !== "ACTIVE_MEMBER" && session.user.email) {
+    const fresh = await callAppsScript<SheetUser>("getUserByEmail", { email: session.user.email });
+    if (fresh.success && fresh.data) accountStatus = fresh.data.account_status;
+  }
+  if (accountStatus !== "ACTIVE_MEMBER") redirect("/dashboard");
 
   // Fetch user's existing servant applications for per-ministry status checks
   const appsRes = await callAppsScript<ServantApplication[]>("getUserServantApplications", {
