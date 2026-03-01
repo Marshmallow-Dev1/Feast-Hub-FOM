@@ -47,7 +47,9 @@ const CrossIcon = () => <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none"
 function getNavItems(user: User): NavItem[] {
   const { role, account_type } = user;
   const isFirstTimer = account_type === "FIRST_TIMER";
-  const isActive = hasAttendeeFeatures(account_type);
+  // Admins always get member features regardless of account_type in JWT
+  const isAdmin = isConnectHeadOrAbove(role) || isFinanceMinistry(role) || isSuper(role);
+  const isActive = hasAttendeeFeatures(account_type) || isAdmin;
 
   const items: NavItem[] = [{ href: "/dashboard", label: "Home", icon: <HomeIcon /> }];
 
