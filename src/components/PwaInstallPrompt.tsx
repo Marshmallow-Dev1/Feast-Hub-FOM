@@ -91,8 +91,8 @@ export default function PwaInstallPrompt() {
           {/* Header */}
           <div className="flex items-center gap-3 mb-3">
             <Image
-              src="/FSC-Logo.jpg"
-              alt="FSC"
+              src="/FOM-Logo.jpg"
+              alt="FOM"
               width={44}
               height={44}
               className="rounded-xl"

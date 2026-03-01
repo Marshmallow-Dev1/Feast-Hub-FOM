@@ -3,7 +3,7 @@ import "./globals.css";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
 import Providers from "@/components/Providers";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://fom-connect-hub.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://fom-feasthub.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     locale: "en_PH",
     images: [
       {
-        url: "/FSC-Logo.jpg",
+        url: "/FOM-Logo.jpg",
         width: 512,
         height: 512,
         alt: "The Feast OLOPSC Marikina",
@@ -44,12 +44,12 @@ export const metadata: Metadata = {
     title: "The Feast OLOPSC Marikina",
     description:
       "Join The Feast every Sunday at DS Hall, OLOPSC, Concepcion, Marikina City.",
-    images: ["/FSC-Logo.jpg"],
+    images: ["/FOM-Logo.jpg"],
   },
   icons: {
-    icon: "/FSC-Logo.jpg",
-    apple: "/FSC-Logo.jpg",
-    shortcut: "/FSC-Logo.jpg",
+    icon: "/FOM-Logo.jpg",
+    apple: "/FOM-Logo.jpg",
+    shortcut: "/FOM-Logo.jpg",
   },
 };
 

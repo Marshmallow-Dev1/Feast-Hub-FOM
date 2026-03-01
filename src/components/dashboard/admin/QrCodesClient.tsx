@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Button from "@/components/ui/Button";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://fom-connect-hub.vercel.app";
+const APP_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://fom-feasthub.vercel.app";
 
 const QR_LINKS = [
   { label: "First Timer Registration", url: `${APP_URL}/?tab=register&type=first_timer`, description: "For new attendees at The Feast" },
@@ -30,7 +30,7 @@ export default function QrCodesClient() {
     if (!qrDataUrl) return;
     const a = document.createElement("a");
     a.href = qrDataUrl;
-    a.download = `fsc-qr-${selected.label.toLowerCase().replace(/\s+/g, "-")}.png`;
+    a.download = `fom-qr-${selected.label.toLowerCase().replace(/\s+/g, "-")}.png`;
     a.click();
   }
 

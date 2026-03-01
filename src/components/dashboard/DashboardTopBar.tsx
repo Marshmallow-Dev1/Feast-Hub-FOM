@@ -23,7 +23,7 @@ export default function DashboardTopBar({ user }: { user: TopBarUser }) {
       {/* Mobile: logo links home */}
       <Link href="/dashboard" className="md:hidden flex items-center gap-2">
         <Image
-          src="/FSC-Logo.jpg"
+          src="/FOM-Logo.jpg"
           alt="FOM"
           width={28}
           height={28}

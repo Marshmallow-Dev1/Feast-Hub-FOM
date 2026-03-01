@@ -127,7 +127,7 @@ export default function DashboardSidebar({ user }: { user: User }) {
   return (
     <aside className="hidden md:flex w-60 flex-col bg-white border-r border-gray-100 min-h-screen">
       <div className="flex items-center gap-3 px-5 py-5 border-b border-gray-100">
-        <Image src="/FSC-Logo.jpg" alt="FSC" width={36} height={36} className="rounded-xl object-cover" />
+        <Image src="/FOM-Logo.jpg" alt="FOM" width={36} height={36} className="rounded-xl object-cover" />
         <div>
           <p className="text-xs font-black text-gray-900 leading-tight">The Feast</p>
           <p className="text-[10px] text-gray-400 leading-tight">OLOPSC Marikina</p>

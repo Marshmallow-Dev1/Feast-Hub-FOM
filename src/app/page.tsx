@@ -8,8 +8,8 @@ export default function LandingPage() {
       <div className="bg-[#ff474f] text-white py-8 px-4 text-center">
         <div className="flex justify-center mb-3">
           <Image
-            src="/FSC-Logo.jpg"
-            alt="FSC Logo"
+            src="/FOM-Logo.jpg"
+            alt="FOM Logo"
             width={72}
             height={72}
             className="rounded-full border-2 border-white/30 object-cover"
