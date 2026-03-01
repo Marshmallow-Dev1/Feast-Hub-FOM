@@ -1,6 +1,6 @@
-// FSC Community PWA Service Worker
+// FOM Community PWA Service Worker
 
-const CACHE_VERSION = 'fsc-v3';
+const CACHE_VERSION = 'fom-v1';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 
 // INSTALL: nothing to pre-cache — all pages are session-sensitive
