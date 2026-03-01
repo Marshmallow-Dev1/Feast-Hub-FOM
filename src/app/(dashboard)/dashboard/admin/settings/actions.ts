@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { callAppsScript } from "@/lib/sheets/client";
 
 export async function updateSettings(data: {
@@ -13,7 +13,7 @@ export async function updateSettings(data: {
 }) {
   const res = await callAppsScript("updateSettings", data);
   if (res.success) {
-    revalidateTag("app-settings");
+    revalidatePath("/dashboard");
   }
   return { success: res.success, error: res.success ? undefined : (res.error || "Save failed.") };
 }
