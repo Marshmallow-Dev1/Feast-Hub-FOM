@@ -60,30 +60,41 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // so the jwt callback can read it without a second Apps Script call.
       if (account?.provider === "google" && user.email) {
         try {
+          const isSuperAdmin = user.email === process.env.SUPER_ADMIN_EMAIL;
+          const isFeastBuilder = user.email === process.env.FEAST_BUILDER_EMAIL;
+          const privilegedRole = isSuperAdmin ? "SUPER_ADMIN" : isFeastBuilder ? "FEAST_BUILDER" : null;
+
           const existing = await callAppsScript<SheetUser>("getUserByEmail", { email: user.email });
           if (existing.success && existing.data) {
             // Existing user — attach their sheet data to the user object
             const u = existing.data;
             (user as any).id = u.id;
-            (user as any).role = u.role;
+            // If this email is privileged and the DB role doesn't reflect it yet, fix it
+            if (privilegedRole && u.role !== privilegedRole) {
+              await callAppsScript("updateUser", {
+                email: user.email,
+                role: privilegedRole,
+                account_status: "ACTIVE_MEMBER",
+              });
+            }
+            (user as any).role = privilegedRole ?? u.role;
             (user as any).account_type = u.account_type;
-            (user as any).account_status = u.account_status;
+            (user as any).account_status = privilegedRole ? "ACTIVE_MEMBER" : u.account_status;
             (user as any).servant_status = u.servant_status;
           } else {
             // New Google user — create placeholder account; user must complete profile
-            const isSuperAdmin = user.email === process.env.SUPER_ADMIN_EMAIL;
             const created = await callAppsScript<{ id: string }>("createUser", {
               email: user.email,
               full_name: user.name || "",
               auth_provider: "google",
-              role: isSuperAdmin ? "SUPER_ADMIN" : "MEMBER",
+              role: privilegedRole ?? "MEMBER",
               account_type: "FEAST_ATTENDEE",
-              account_status: isSuperAdmin ? "ACTIVE_MEMBER" : "PENDING_SETUP",
+              account_status: privilegedRole ? "ACTIVE_MEMBER" : "PENDING_SETUP",
               servant_status: "NONE",
             });
-            (user as any).role = isSuperAdmin ? "SUPER_ADMIN" : "MEMBER";
+            (user as any).role = privilegedRole ?? "MEMBER";
             (user as any).account_type = "FEAST_ATTENDEE";
-            (user as any).account_status = isSuperAdmin ? "ACTIVE_MEMBER" : "PENDING_SETUP";
+            (user as any).account_status = privilegedRole ? "ACTIVE_MEMBER" : "PENDING_SETUP";
             (user as any).servant_status = "NONE";
             if (created.data?.id) (user as any).id = created.data.id;
           }
