@@ -1,0 +1,33 @@
+{
+  "name": "FOM Hub",
+  "short_name": "FOM Hub",
+  "description": "Community portal for The Feast OLOPSC Marikina",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff474f",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "en-PH",
+  "categories": ["lifestyle", "social"],
+  "icons": [
+    {
+      "src": "/FSC-Logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Home",
+      "url": "/dashboard"
+    },
+    {
+      "name": "Send Tithes",
+      "short_name": "Tithes",
+      "url": "/dashboard/tithes"
+    }
+  ]
+}
