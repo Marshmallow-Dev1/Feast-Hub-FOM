@@ -179,7 +179,7 @@ export const getCachedSettings = unstable_cache(
     return res.success ? res.data ?? null : null;
   },
   ["app-settings"],
-  { revalidate: 300 }
+  { revalidate: 300, tags: ["app-settings"] }
 );
 
 /**

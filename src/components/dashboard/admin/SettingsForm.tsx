@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { callAppsScriptClient as callAppsScript, type AppSettings } from "@/lib/sheets/client";
+import { type AppSettings } from "@/lib/sheets/client";
+import { updateSettings } from "@/app/(dashboard)/dashboard/admin/settings/actions";
 
 export default function SettingsForm({ initialSettings }: { initialSettings: AppSettings | null | undefined }) {
   const [loading, setLoading] = useState(false);
@@ -17,13 +18,13 @@ export default function SettingsForm({ initialSettings }: { initialSettings: App
     setSuccess(false);
     const form = new FormData(e.currentTarget);
 
-    const res = await callAppsScript("updateSettings", {
-      ftd_date: form.get("ftd_date"),
-      ftd_time: form.get("ftd_time"),
-      ftd_venue: form.get("ftd_venue"),
-      ftd_description: form.get("ftd_description"),
-      feast_venue: form.get("feast_venue"),
-      feast_time: form.get("feast_time"),
+    const res = await updateSettings({
+      ftd_date: form.get("ftd_date") as string,
+      ftd_time: form.get("ftd_time") as string,
+      ftd_venue: form.get("ftd_venue") as string,
+      ftd_description: form.get("ftd_description") as string,
+      feast_venue: form.get("feast_venue") as string,
+      feast_time: form.get("feast_time") as string,
     });
 
     setLoading(false);
